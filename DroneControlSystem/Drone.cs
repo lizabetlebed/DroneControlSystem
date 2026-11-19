@@ -23,11 +23,20 @@ namespace DroneControlSystem
             IsEngineOn = false;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
        
 =======
 
 
 >>>>>>> feature/battery-check
+=======
+
+        //Второй конструктор
+        public Drone(string model) : this(model, 100)
+        {
+        }
+
+>>>>>>> feature/constructor-improvement
         // Метод для вывода информации о дроне
         public void PrintInfo()
         {
