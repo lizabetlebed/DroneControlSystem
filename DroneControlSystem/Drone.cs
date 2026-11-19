@@ -61,6 +61,16 @@ namespace DroneControlSystem
             BatteryLevel -= 5;
             Console.WriteLine($"{Model} взлетел на высоту 10 м. Заряд: {BatteryLevel}%");
         }
+        private const int BatteryConsumptionPerMinute = 2;
+        public int CalculateFlightTime()
+        {
+            if (!IsEngineOn)
+            {
+                Console.WriteLine("Двигатель выключен. Время полёта не может быть рассчитано.");
+                return 0;
+            }
+            return BatteryLevel / BatteryConsumptionPerMinute;
+        }
 
     }
 }

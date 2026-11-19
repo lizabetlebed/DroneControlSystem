@@ -5,64 +5,69 @@ namespace DroneControlSystem
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("*******************************************");
-            Console.WriteLine("*** Система управления БПЛА (версия 2.0) ***");
-            Console.WriteLine("*******************************************");
-
-
-            //Массив из трёх дронов
-            Drone[] drones = new Drone[]
+            // 1. Создаем дронов
+            Drone[] drones =
             {
                 new Drone("DJI Mini 3", 85),
                 new Drone("Autel EVO Lite", 45),
                 new Drone("Parrot Anafi", 15)
             };
 
-            foreach (Drone drone in drones)
+            // 2. Бесконечное меню
+            while (true)
             {
-                drone.PrintInfo();
-                if (drone.BatteryLevel < 20)
+                Console.WriteLine("\n=== МЕНЮ ===");
+                Console.WriteLine("1 - Инфо о всех дронах");
+                Console.WriteLine("2 - Взлет дрона");
+                Console.WriteLine("3 - Подзарядка дрона");
+                Console.WriteLine("4 - Время полета");
+                Console.WriteLine("5 - Сохранить в файл");
+                Console.WriteLine("6 - Загрузить из файла");
+                Console.WriteLine("0 - Выход");
+                Console.Write("Выбор: ");
+
+                int choice = int.Parse(Console.ReadLine());
+
+                if (choice == 0) break; // Выход
+
+                if (choice == 1)
                 {
-                    Console.WriteLine("Низкий заряд!");
+                    foreach (Drone d in drones) d.PrintInfo();
                 }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (drones[i].BatteryLevel < 50)
+                else if (choice == 5)
                 {
-                    Console.WriteLine("Насколько хочите подзарядить?");
-                    int choice = int.Parse(Console.ReadLine());
-                    if (choice != 0)
+                    FileService.SaveDrones(drones, "drones.json");
+                }
+                else if (choice == 6)
+                {
+                    drones = FileService.LoadDrones("drones.json");
+                    Console.WriteLine("Загружено!");
+                }
+                else if (choice >= 2 && choice <= 4)
+                {
+                    // Спрашиваем, с каким дроном работаем
+                    Console.Write("Индекс дрона (0, 1, 2): ");
+                    int index = int.Parse(Console.ReadLine());
+                    Drone d = drones[index];
+
+                    if (choice == 2) d.TakeOff();
+                    else if (choice == 3)
                     {
-                        drones[i].ChargeBattery(choice);
+                        Console.Write("На сколько % зарядить? ");
+                        d.ChargeBattery(int.Parse(Console.ReadLine()));
                     }
-                }
-            }
-       
-            // Создание второго дрона с помощью конструктора
-            Drone newDrone = new Drone("DJI Mini 3");
-            newDrone.PrintInfo();
-            Console.WriteLine();
-            
-            // Демонстрация работы условия и цикла
-            Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
-            int command = int.Parse(Console.ReadLine());
-            while (command != 0)
-            {
-                if (command == 1)
-                {
-                    drones[0].TakeOff();
+                    else if (choice == 4)
+                    {
+                        Console.WriteLine($"Время: {d.CalculateFlightTime()} мин.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Неизвестная команда.");
+                    Console.WriteLine("Нет такой команды.");
                 }
-                Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
-                command = int.Parse(Console.ReadLine());
             }
-            Console.WriteLine("Программа завершена.");
         }
     }
 }
