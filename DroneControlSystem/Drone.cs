@@ -21,6 +21,12 @@ namespace DroneControlSystem
             Altitude = 0;
             IsEngineOn = false;
         }
+
+        //Второй конструктор
+        public Drone(string model) : this(model, 100)
+        {
+        }
+
         // Метод для вывода информации о дроне
         public void PrintInfo()
         {
