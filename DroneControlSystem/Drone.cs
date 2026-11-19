@@ -22,21 +22,12 @@ namespace DroneControlSystem
             Altitude = 0;
             IsEngineOn = false;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-       
-=======
-
-
->>>>>>> feature/battery-check
-=======
 
         //Второй конструктор
         public Drone(string model) : this(model, 100)
         {
         }
 
->>>>>>> feature/constructor-improvement
         // Метод для вывода информации о дроне
         public void PrintInfo()
         {
@@ -45,9 +36,6 @@ namespace DroneControlSystem
             Console.WriteLine($"Высота: {Altitude:F1} м");
             Console.WriteLine($"Двигатель: {(IsEngineOn ? "включён" : "выключен")}");
         }
-<<<<<<< HEAD
-        
-=======
 
         //Метод для увеличения заряда, но < 100
         public void ChargeBattery(int amount)
@@ -60,7 +48,6 @@ namespace DroneControlSystem
             Console.WriteLine($"Заряд после подзарядки: {BatteryLevel}%");
         }
 
->>>>>>> feature/battery-check
         // Метод для взлёта (простая логика с условием)
         public void TakeOff()
         {
