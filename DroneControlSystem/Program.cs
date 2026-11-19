@@ -21,6 +21,7 @@ namespace DroneControlSystem
             newDrone.PrintInfo();
             Console.WriteLine();
             
+
             // Демонстрация работы условия и цикла
             Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
             int command = int.Parse(Console.ReadLine());
