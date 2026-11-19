@@ -7,12 +7,9 @@ namespace DroneControlSystem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("*******************************************");
-            Console.WriteLine("*** Система управления БПЛА (версия 2.0) ***");
-            Console.WriteLine("*******************************************");
+            Console.WriteLine("=== Система управления БПЛА (версия 3.0) ===\n");
 
-
-            //Массив из трёх дронов
+            // Твой массив из трёх дронов
             Drone[] drones = new Drone[]
             {
                 new Drone("DJI Mini 3", 85),
@@ -20,49 +17,85 @@ namespace DroneControlSystem
                 new Drone("Parrot Anafi", 15)
             };
 
-            foreach (Drone drone in drones)
+            // Бесконечный цикл меню
+            while (true)
             {
-                drone.PrintInfo();
-                if (drone.BatteryLevel < 20)
+                Console.WriteLine("\nМеню:");
+                Console.WriteLine("1. Показать информацию о всех дронах");
+                Console.WriteLine("2. Взлёт выбранного дрона");
+                Console.WriteLine("3. Подзарядка выбранного дрона");
+                Console.WriteLine("4. Расчёт времени полёта");
+                Console.WriteLine("0. Выход");
+                Console.Write("Выберите действие: ");
+
+                string input = Console.ReadLine();
+
+                // Проверка, что введено число
+                if (!int.TryParse(input, out int choice))
                 {
-                    Console.WriteLine("Низкий заряд!");
+                    Console.WriteLine("Ошибка: введите число.");
+                    continue; // Начинаем цикл заново
                 }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (drones[i].BatteryLevel < 50)
+
+                if (choice == 0)
                 {
-                    Console.WriteLine("Насколько хочите подзарядить?");
-                    int choice = int.Parse(Console.ReadLine());
-                    if (choice != 0)
+                    Console.WriteLine("Программа завершена.");
+                    break; // Выход из программы
+                }
+
+                // Для пунктов 2, 3 и 4 нужно знать, с каким дроном работаем
+                if (choice >= 2 && choice <= 4)
+                {
+                    Console.Write("Введите индекс дрона (0, 1 или 2): ");
+                    string indexInput = Console.ReadLine();
+
+                    // Проверка правильности индекса
+                    if (!int.TryParse(indexInput, out int index) || index < 0 || index >= drones.Length)
                     {
-                        drones[i].ChargeBattery(choice);
+                        Console.WriteLine("Ошибка: неверный индекс дрона.");
+                        continue;
+                    }
+
+                    Drone selectedDrone = drones[index];
+
+                    // Выполняем выбранное действие
+                    if (choice == 2)
+                    {
+                        selectedDrone.TakeOff();
+                    }
+                    else if (choice == 3)
+                    {
+                        Console.Write("На сколько % подзарядить? ");
+                        string chargeInput = Console.ReadLine();
+                        if (int.TryParse(chargeInput, out int amount))
+                        {
+                            selectedDrone.ChargeBattery(amount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка: введите число.");
+                        }
+                    }
+                    else if (choice == 4)
+                    {
+                        int time = selectedDrone.CalculateFlightTime();
+                        if (time > 0) Console.WriteLine($"Время полёта: {time} мин.");
                     }
                 }
-            }
-       
-            // Создание второго дрона с помощью конструктора
-            Drone newDrone = new Drone("DJI Mini 3");
-            newDrone.PrintInfo();
-            Console.WriteLine();
-            
-            // Демонстрация работы условия и цикла
-            Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
-            int command = int.Parse(Console.ReadLine());
-            while (command != 0)
-            {
-                if (command == 1)
+                else if (choice == 1)
                 {
-                    drones[0].TakeOff();
+                    // Вывод информации о всех дронах
+                    foreach (Drone d in drones)
+                    {
+                        d.PrintInfo();
+                        Console.WriteLine();
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Неизвестная команда.");
+                    Console.WriteLine("Неизвестная команда. Попробуйте снова.");
                 }
-                Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
-                command = int.Parse(Console.ReadLine());
             }
-            Console.WriteLine("Программа завершена.");
         }
     }
 }
