@@ -22,9 +22,20 @@ namespace DroneControlSystem
                 drone.PrintInfo();
                 if (drone.BatteryLevel < 20)
                 {
-                    Console.WriteLine("Низкий уровень заряда!");
+                    Console.WriteLine("Низкий заряд!");
                 }
-                Console.WriteLine();
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (drones[i].BatteryLevel < 50)
+                {
+                    Console.WriteLine("Насколько хочите подзарядить?");
+                    int choice = int.Parse(Console.ReadLine());
+                    if (choice != 0)
+                    {
+                        drones[i].ChargeBattery(choice);
+                    }
+                }
             }
        
             // Демонстрация работы условия и цикла
