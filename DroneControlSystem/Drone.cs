@@ -21,6 +21,8 @@ namespace DroneControlSystem
             Altitude = 0;
             IsEngineOn = false;
         }
+
+
         // Метод для вывода информации о дроне
         public void PrintInfo()
         {
@@ -29,6 +31,18 @@ namespace DroneControlSystem
             Console.WriteLine($"Высота: {Altitude:F1} м");
             Console.WriteLine($"Двигатель: {(IsEngineOn ? "включён" : "выключен")}");
         }
+
+        //Метод для увеличения заряда, но < 100
+        public void ChargeBattery(int amount)
+        {
+            BatteryLevel += amount;
+            if (BatteryLevel > 100)
+            {
+                BatteryLevel = 100;
+            }
+            Console.WriteLine($"Заряд после подзарядки: {BatteryLevel}%");
+        }
+
         // Метод для взлёта (простая логика с условием)
         public void TakeOff()
         {
