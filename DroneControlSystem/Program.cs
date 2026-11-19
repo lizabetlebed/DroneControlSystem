@@ -38,6 +38,11 @@ namespace DroneControlSystem
                 }
             }
        
+            // Создание второго дрона с помощью конструктора
+            Drone newDrone = new Drone("DJI Mini 3");
+            newDrone.PrintInfo();
+            Console.WriteLine();
+            
             // Демонстрация работы условия и цикла
             Console.Write("Введите команду (1 — взлёт, 0 — выход): ");
             int command = int.Parse(Console.ReadLine());
